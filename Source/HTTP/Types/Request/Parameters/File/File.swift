@@ -1,5 +1,5 @@
 //
-//  HTTPUploadRequestFile.swift
+//  File.swift
 //  RxNetworkKit
 //
 //  Created by Loay Ashraf on 24/03/2023.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Holds file details for upload request.
-public struct HTTPUploadRequestFile {
+public struct File: FileType {
     
     /// name of the file.
     let name: String
@@ -66,3 +66,4 @@ public struct HTTPUploadRequestFile {
     }
     
 }
+

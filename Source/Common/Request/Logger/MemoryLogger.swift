@@ -13,12 +13,12 @@ final class MemoryLogger {
     
     private init() { }
     
-    func logLargeUploadFile(file: HTTPUploadRequestFile) {
+    func logLargeUploadFile(file: FileType) {
         let logMessage = makeLogMessage(for: file)
         print(logMessage)
     }
     
-    private func makeLogMessage(for file: HTTPUploadRequestFile) -> String {
+    private func makeLogMessage(for file: FileType) -> String {
         var logMessage = ""
         
         logMessage += "\n* * * * * * * * * * MEMORY WARNING * * * * * * * * * *\n"
