@@ -7,14 +7,20 @@
 
 import Foundation
 
+/// A factory class responsible for making console messages
+/// for the body of outgoing HTTP requests based on different logging options.
+///
+/// This class provides methods to create log messages for plain data,
+/// file uploads, and multipart form data. It is utilized by the
+/// `HTTPLogger` to format and present the body of HTTP requests in a readable manner.
 final class HTTPLogBodyMessageFactory {
     
-    /// Makes console body message for outgoing request.
+    /// Makes console body message for the specified body option.
     ///
     /// - Parameters:
-    ///   - bodyOption: `HTTPLogBodyOption` option for how body is represented in the log message.
+    ///   - bodyOption: `HTTPLogBodyOption` option for how the body is represented in the log message.
     ///
-    /// - Returns: `String` of outgoing request body message.
+    /// - Returns: `String` of the outgoing request body message.
     func make(bodyOption: HTTPLogBodyOption) -> String {
         switch bodyOption {
         case .plain(let body):
@@ -26,6 +32,11 @@ final class HTTPLogBodyMessageFactory {
         }
     }
     
+    /// Makes console message for raw data body.
+    ///
+    /// - Parameter rawData: Optional `Data` object representing the body.
+    ///
+    /// - Returns: `String` representation of the raw data body.
     private func make(_ rawData: Data?) -> String {
         var logBodyMessage = ""
         if let rawData = rawData {
@@ -38,12 +49,12 @@ final class HTTPLogBodyMessageFactory {
         return logBodyMessage
     }
     
-    /// Makes console body message for outgoing request.
+    /// Makes console message for a file body.
     ///
     /// - Parameters:
     ///   - file: `FileType` file details to be printed in place of body.
     ///
-    /// - Returns: `String` of outgoing request body message.
+    /// - Returns: `String` of the outgoing request body message.
     private func make(_ file: FileType) -> String {
         var logBodyMessage: String = ""
         
@@ -69,12 +80,12 @@ final class HTTPLogBodyMessageFactory {
         return logBodyMessage
     }
     
-    /// Makes console body message for outgoing request.
+    /// Makes console message for multipart form data body.
     ///
     /// - Parameters:
     ///   - formData: `FormData` form data details to be printed in place of body.
     ///
-    /// - Returns: `String` of outgoing request body message.
+    /// - Returns: `String` of the outgoing request body message.
     private func make(_ formData: FormData) -> String {
         var logBodyMessage: String = "\n"
         let boundary = formData.boundary

@@ -7,13 +7,19 @@
 
 import Foundation
 
+/// A factory class responsible for making cURL command representations
+/// for HTTP requests.
+///
+/// This class provides methods to create a cURL command string from a given
+/// `URLRequest`, including handling different body options like plain data,
+/// file uploads, and multipart form data.
 final class CURLCommandFactory {
     
     /// Makes cURL command representation for a given request.
     ///
     /// - Parameters:
-    ///   - request: `URLRequest` used to make cURL command representation.
-    ///   - body: `CURLCommandBody` that is used to make the cURL command body option.
+    ///   - request: `URLRequest` used to make the cURL command representation.
+    ///   - bodyOption: `HTTPLogBodyOption` that determines how the body is represented in the cURL command.
     ///
     /// - Returns: cURL command representation for the given request.
     func make(for request: URLRequest, bodyOption: HTTPLogBodyOption) -> String {

@@ -7,18 +7,27 @@
 
 import Foundation
 
+/// A singleton class responsible for making log messages for outgoing HTTP requests
+/// and incoming HTTP responses.
+///
+/// The `HTTPLogMessageFactory` provides formatted output
+/// for monitoring and debugging HTTP communications, including details such as headers,
+/// body content, and CURL commands.
 final class HTTPLogMessageFactory {
 
+    /// Factory responsible for maling body log messages.
     private let logBodyMessageFactory: HTTPLogBodyMessageFactory = .init()
+    
+    /// Factory responsible for making CURL commands.
     private let curlCommandFactory: CURLCommandFactory = .init()
     
     /// Makes console message for outgoing request.
     ///
     /// - Parameters:
-    ///   - request: `URLRequest` to be included in message.
+    ///   - request: `URLRequest` to be included in the message.
     ///   - bodyOption: `HTTPLogBodyOption` option for how body is represented in the log message.
     ///
-    /// - Returns: `String` of outgoing request message.
+    /// - Returns: `String` of the outgoing request message.
     func make(for request: URLRequest, bodyOption: HTTPLogBodyOption) -> String {
         var logMessage: String = ""
         
@@ -60,10 +69,10 @@ final class HTTPLogMessageFactory {
     /// Makes console message for incoming response.
     ///
     /// - Parameters:
-    ///   - responseArguments: `(URL?, URLResponse?, Data?, Error?)` to be included in message.
-    ///   - bodyLogMessage: `String?` placeholder to be included in message in place of actual body.
+    ///   - responseArguments: `(URL?, Data?, URLResponse?, Error?)` to be included in the message.
+    ///   - bodyLogMessage: `String?` placeholder to be included in the message in place of actual body.
     ///
-    /// - Returns: `String` of incoming response message.
+    /// - Returns: `String` of the incoming response message.
     func make(for responseArguments: (URL?, Data?, URLResponse?, Error?), bodyLogMessage: String?) -> String {
         var logMessage: String = ""
         
@@ -115,7 +124,6 @@ final class HTTPLogMessageFactory {
             } else {
                 responseDetails += "\nError: \(responseError.localizedDescription)\n"
             }
-            
         }
         
         logMessage += responseDetails
@@ -123,5 +131,4 @@ final class HTTPLogMessageFactory {
         
         return logMessage
     }
-    
 }
