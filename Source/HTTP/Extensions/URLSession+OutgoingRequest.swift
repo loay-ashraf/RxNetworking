@@ -14,7 +14,7 @@ extension URLSession {
     /// - Parameter initialRequest: Initial `URLRequest` object.
     ///
     /// - Returns: Actual outgoing `URLRequest` after applying additional HTTP headers.
-    func outgoingRequest(for initialRequest: URLRequest) -> URLRequest {
+    func finalRequest(for initialRequest: URLRequest) -> URLRequest {
         var finalRequest = initialRequest
         let initialRequestHTTPHeaders = initialRequest.allHTTPHeaderFields ?? [:]
         let configurationAdditionalHTTPHeaders = (configuration.httpAdditionalHeaders) as? [String: String] ?? [:]

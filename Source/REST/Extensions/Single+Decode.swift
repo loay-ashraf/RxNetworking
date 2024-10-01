@@ -54,14 +54,24 @@ extension PrimitiveSequence where Trait == SingleTrait, Element == (response: HT
     /// - Returns: `Single` observable to be observed for values.
     func decode<M: Decodable, E: HTTPAPIError>(_ modelType: M.Type, errorType: E.Type) -> Single<M> {
         map {
-            let jsonDecoder = JSONDecoder()
-            do {
-                let model = try jsonDecoder.decode(modelType.self, from: $0.data)
-                return model
-            } catch {
-                let apiError = try jsonDecoder.decode(errorType.self, from: $0.1)
-                let networkError = HTTPError.api(apiError)
-                throw networkError
+            if let contentType = $0.response.allHeaderFields["Content-Type"] as? String,
+               contentType.contains("text/plain") {
+                guard let string = String(data: $0.data, encoding: .utf8) else {
+                    let decodingError = DecodingError.dataCorrupted(.init(codingPath: [],
+                                                                          debugDescription: "Corrupt body provided."))
+                    throw decodingError
+                }
+                return string as! M
+            } else {
+                let jsonDecoder = JSONDecoder()
+                do {
+                    let model = try jsonDecoder.decode(modelType.self, from: $0.data)
+                    return model
+                } catch {
+                    let apiError = try jsonDecoder.decode(errorType.self, from: $0.1)
+                    let networkError = HTTPError.api(apiError)
+                    throw networkError
+                }
             }
         }
     }

@@ -90,18 +90,12 @@ public class HTTPClient {
     ///   - apiErrorType: `HTTPAPIError` type expected to be received in response body.
     ///
     /// - Returns: `Observable` object encapsulating upload request.
-    public func upload<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(_ router: HTTPUploadRequestRouter, _ file: HTTPUploadRequestFile, _ httpErrorType: E.Type = DefaultHTTPBodyError.self, _ apiErrorType: AE.Type = DefaultHTTPAPIError.self) -> Observable<HTTPUploadRequestEvent<T>> {
+    public func upload<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(_ router: HTTPUploadRequestRouter, _ file: File, _ httpErrorType: E.Type = DefaultHTTPBodyError.self, _ apiErrorType: AE.Type = DefaultHTTPAPIError.self) -> Observable<HTTPUploadRequestEvent<T>> {
         let originalRequest = router.asURLRequest()
         let adaptedRequest = requestInterceptor.adapt(originalRequest, for: urlSession)
-        let retryMaxAttempts = requestInterceptor.retryMaxAttempts(adaptedRequest, for: urlSession)
-        let retryPolicy = requestInterceptor.retryPolicy(adaptedRequest, for: urlSession)
-        let shouldRetry = { (error: HTTPError) in
-            self.requestInterceptor.shouldRetry(adaptedRequest, for: self.urlSession, dueTo: error)
-        }
         let observable = urlSession
             .rx
             .uploadResponse(request: adaptedRequest, file: file, modelType: T.self, httpErrorType: E.self, apiErrorType: AE.self)
-            .retry(retryMaxAttempts, delay: retryPolicy, shouldRetry: shouldRetry)
         return observable
     }
     
@@ -110,23 +104,17 @@ public class HTTPClient {
     ///
     /// - Parameters:
     ///   - router: `HTTPUploadRequestRouter` object used to create request.
-    ///   - formData: `HTTPUploadRequestFormData` object including parameters and files for upload.
+    ///   - formData: `FormData` object including parameters and files for upload.
     ///   - httpErrorType: `HTTPBodyError` http body error type.
     ///   - apiErrorType: `HTTPAPIError` type expected to be received in response body.
     ///
     /// - Returns: `Observable` object encapsulating upload request.
-    public func upload<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(_ router: HTTPUploadRequestRouter, _ formData: HTTPUploadRequestFormData, _ httpErrorType: E.Type = DefaultHTTPBodyError.self, _ apiErrorType: AE.Type = DefaultHTTPAPIError.self) -> Observable<HTTPUploadRequestEvent<T>> {
+    public func upload<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(_ router: HTTPUploadRequestRouter, _ formData: FormData, _ httpErrorType: E.Type = DefaultHTTPBodyError.self, _ apiErrorType: AE.Type = DefaultHTTPAPIError.self) -> Observable<HTTPUploadRequestEvent<T>> {
         let originalRequest = router.asURLRequest()
         let adaptedRequest = requestInterceptor.adapt(originalRequest, for: urlSession)
-        let retryMaxAttempts = requestInterceptor.retryMaxAttempts(adaptedRequest, for: urlSession)
-        let retryPolicy = requestInterceptor.retryPolicy(adaptedRequest, for: urlSession)
-        let shouldRetry = { (error: HTTPError) in
-            self.requestInterceptor.shouldRetry(adaptedRequest, for: self.urlSession, dueTo: error)
-        }
         let observable = urlSession
             .rx
             .uploadResponse(request: adaptedRequest, formData: formData, modelType: T.self, httpErrorType: E.self, apiErrorType: AE.self)
-            .retry(retryMaxAttempts, delay: retryPolicy, shouldRetry: shouldRetry)
         return observable
     }
     

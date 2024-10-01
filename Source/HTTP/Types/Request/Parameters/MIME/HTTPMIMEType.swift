@@ -7,6 +7,7 @@
 
 /// This is a list of most common HTTP MIME types.
 enum HTTPMIMEType: String {
+    
     case aac = "audio/aac"
     case avif = "image/avif"
     case bmp = "image/bmp"
@@ -38,6 +39,7 @@ enum HTTPMIMEType: String {
     case xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     case xml = "application/xml"
     case zip = "application/zip"
+    
     /// Creates `HTTPMIMEType` instance.
     ///
     /// - Parameter fileExtension: file extention `String` ('.png', '.jpeg').
@@ -77,6 +79,7 @@ enum HTTPMIMEType: String {
         default: return nil
         }
     }
+    
     /// Creates `HTTPMIMEType` instance.
     ///
     /// - Parameter fileExtension: file name `String` ('example.png', 'example.jpeg').
@@ -85,4 +88,5 @@ enum HTTPMIMEType: String {
         let fileExtensionString = String(fileExtensionSubString)
         self.init(fileExtension: fileExtensionString)
     }
+    
 }

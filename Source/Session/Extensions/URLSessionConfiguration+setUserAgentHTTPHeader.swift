@@ -11,11 +11,10 @@ extension URLSessionConfiguration {
     /// Sets `User-Agent` header as an additional HTTP header.
     func setUserAgentHTTPHeader() {
         let mainBundle = Bundle.main
-        let frameworkBundle = Bundle.init(for: HTTPClient.self)
         let mainBundleIndentifier = mainBundle.bundleIdentifier ?? "Unknown Client Identifier"
-        let frameworkBundleVersion = frameworkBundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let frameworkVersion = "3.0.1"
         let osName = ProcessInfo.processInfo.operatingSystemName
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
-        setAdditionalHTTPHeader("User-Agent", value: "RxNetworkKit/\(frameworkBundleVersion) (\(osName) \(osVersion)) (\(mainBundleIndentifier))")
+        setAdditionalHTTPHeader("User-Agent", value: "RxNetworkKit/\(frameworkVersion) (\(osName) \(osVersion)) (\(mainBundleIndentifier))")
     }
 }

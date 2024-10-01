@@ -21,7 +21,7 @@ extension Reactive where Base: URLSession {
     ///   - apiErrorType: `HTTPAPIError` type for expected error in HTTP response body.
     ///
     /// - Returns: a `Observable` object of `UploadEvent` type.
-    func uploadResponse<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(request: URLRequest, file: HTTPUploadRequestFile, modelType: T.Type, httpErrorType: E.Type, apiErrorType: AE.Type) -> Observable<HTTPUploadRequestEvent<T>> {
+    func uploadResponse<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(request: URLRequest, file: File, modelType: T.Type, httpErrorType: E.Type, apiErrorType: AE.Type) -> Observable<HTTPUploadRequestEvent<T>> {
         let observables = uploadResponse(request: request, file: file)
         let progressObservable = observables
             .0
@@ -35,17 +35,18 @@ extension Reactive where Base: URLSession {
         let mergedObservable = responseObservable.merge(with: progressObservable)
         return mergedObservable
     }
+    
     /// Creates an observable with `UploadEvent` type.
     ///
     /// - Parameters:
     ///   - request: `URLRequest` used to create upload task and its observables.
-    ///   - formData: `HTTPUploadRequestFormData` object that includes parameters and files to be uploaded.
+    ///   - formData: `FormData` object that includes parameters and files to be uploaded.
     ///   - modelType: `Decodable` type for model  in HTTP response body.
     ///   - httpErrorType: `HTTPBodyError` http body error type.
     ///   - apiErrorType: `HTTPAPIError` type for expected error in HTTP response body.
     ///
     /// - Returns: a `Observable` object of `UploadEvent` type.
-    func uploadResponse<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(request: URLRequest, formData: HTTPUploadRequestFormData, modelType: T.Type, httpErrorType: E.Type, apiErrorType: AE.Type) -> Observable<HTTPUploadRequestEvent<T>> {
+    func uploadResponse<T: Decodable, E: HTTPBodyError, AE: HTTPAPIError>(request: URLRequest, formData: FormData, modelType: T.Type, httpErrorType: E.Type, apiErrorType: AE.Type) -> Observable<HTTPUploadRequestEvent<T>> {
         let observables = uploadResponse(request: request, formData: formData)
         let progressObservable = observables
             .0

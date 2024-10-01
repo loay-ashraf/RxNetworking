@@ -18,8 +18,8 @@ extension URLSession {
     func fileDownloadTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
 #if DEBUG
         if URLSession.logRequests {
-            let outgoingRequest = outgoingRequest(for: request)
-            HTTPRequestLogger.shared.log(request: outgoingRequest)
+            let finalRequest = finalRequest(for: request)
+            HTTPLogger.shared.log(request: finalRequest)
         }
 #endif
         let task = dataTask(with: request, completionHandler: completionHandler)
@@ -36,8 +36,8 @@ extension URLSession {
     func fileDownloadTask(with request: URLRequest, saveTo url: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
 #if DEBUG
         if URLSession.logRequests {
-            let outgoingRequest = outgoingRequest(for: request)
-            HTTPRequestLogger.shared.log(request: outgoingRequest)
+            let finalRequest = finalRequest(for: request)
+            HTTPLogger.shared.log(request: finalRequest)
         }
 #endif
         let task = dataTask(with: request) { data, response, error in

@@ -10,32 +10,26 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: URLSession {
-    /**
-     Observable sequence of responses for URL request.
-     
-     Performing of request starts after observer is subscribed and not after invoking this method.
-     
-     **URL requests will be performed per subscribed observer.**
-     
-     Any error during fetching of the response will cause observed sequence to terminate with error.
-     
-     - parameter request: URL request.
-     - returns: Observable sequence of URL responses.
-     */
+    
+    /// Observable sequence of responses for request.
+    ///
+    /// - Parameter request: `URLRequest` object.
+    ///
+    /// - Returns: Observable sequence of response.
     func restResponse(request: URLRequest) -> Observable<(response: HTTPURLResponse, data: Data)> {
         return Observable.create { observer in
             
 #if DEBUG
             if URLSession.logRequests {
-                let outgoingRequest = base.outgoingRequest(for: request)
-                HTTPRequestLogger.shared.log(request: outgoingRequest)
+                let finalRequest = base.finalRequest(for: request)
+                HTTPLogger.shared.log(request: finalRequest)
             }
 #endif
             
             let task = self.base.dataTask(with: request) { data, response, error in
 #if DEBUG
                 if URLSession.logRequests {
-                    HTTPRequestLogger.shared.log(response: (request.url, response, data, error))
+                    HTTPLogger.shared.log(responseArguments: (request.url, data, response, error))
                 }
 #endif
                 

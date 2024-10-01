@@ -25,7 +25,7 @@ extension Reactive where Base: URLSession {
             let task = self.base.fileDownloadTask(with: request) { data, response, error in
 #if DEBUG
                 if URLSession.logRequests {
-                    HTTPRequestLogger.shared.log(response: (request.url, response, data, error), bodyPlaceholder: "[File Body]")
+                    HTTPLogger.shared.log(responseArguments: (request.url, data, response, error), bodyLogMessage: "[File Body]")
                 }
 #endif
                 guard let response = response, let data = data else {
@@ -66,7 +66,7 @@ extension Reactive where Base: URLSession {
             let task = self.base.fileDownloadTask(with: request, saveTo: url) { data, response, error in
 #if DEBUG
                 if URLSession.logRequests {
-                    HTTPRequestLogger.shared.log(response: (request.url, response, data, error), bodyPlaceholder: "[File Body]")
+                    HTTPLogger.shared.log(responseArguments: (request.url, data, response, error), bodyLogMessage: "[File Body]")
                 }
 #endif
                 guard let response = response, let data = data else {
