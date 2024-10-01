@@ -62,9 +62,9 @@ In this section, you will create a ``HTTPClient`` and use the ``HTTPUploadReques
 
 - First, go to *ViewController.swift* file and create a ``HTTPClient`` using a ``Session`` in the `viewDidLoad` method.
 
-- Second, Create an `UploadRequestRouter`, a one ore more file `Data`, a one or more ``HTTPUploadRequestFile`` and a ``HTTPUploadRequestFormData``.
+- Second, Create an `UploadRequestRouter`, a one or more file `Data`, a one or more ``FormFile`` and a ``FormData``.
 
-- Call the `HTTPClient.upload` method and pass the `UploadRequestRouter` and the ``HTTPUploadRequestFormData`` as arguments.
+- Call the `HTTPClient.upload` method and pass the `UploadRequestRouter` and the ``FormData`` as arguments.
 
 - Subscribe to the output `Observable` as done below:
 
@@ -88,9 +88,9 @@ class ViewController: UIViewController {
         let uploadRequestRouter = UploadRequestRouter.default(url: URL(string: "https://example.com/upload/multi")!)
         let file1Data = "Example file 1".data(using: .utf8)!
         let file2Data = "Example file 2".data(using: .utf8)!
-        let file1 = HTTPUploadRequestFile(forKey: "file1", withName: "example1.txt", withData: file1Data)!
-        let file2 = HTTPUploadRequestFile(forKey: "file2", withName: "example2.txt", withData: file1Data)!
-        let formData = HTTPUploadRequestFormData(parameters: [:], files: [file1, file2])
+        let file1 = FormFile(forKey: "file1", withName: "example1.txt", withData: file1Data)!
+        let file2 = FormFile(forKey: "file2", withName: "example2.txt", withData: file1Data)!
+        let formData = FormData(parameters: [], files: [file1, file2])
         httpClient.upload(uploadRequestRouter, formData)
             .subscribe(onNext: { (event: HTTPUploadRequestEvent<Model>) in
                 switch event {
@@ -113,7 +113,7 @@ class ViewController: UIViewController {
 
 - That's it, you made a multipart form upload request.
 
-- Tip: If you need to upload a file from the disk, you can provide the file url through the `withURL` parameter to the ``HTTPUploadRequestFile`` initializer.
+- Tip: If you need to upload a file from the disk, you can provide the file url through the `withURL` parameter to the ``FormFile`` initializer.
 
 - Note: If you choose to upload a file from the disk, you don't have to specify the file name as it will be extracted from the provided file url.
 

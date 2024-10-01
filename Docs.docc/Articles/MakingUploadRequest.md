@@ -62,9 +62,9 @@ In this section, you will create a ``HTTPClient`` and use the ``HTTPUploadReques
 
 - First, go to *ViewController.swift* file and create a ``HTTPClient`` using a ``Session`` in the `viewDidLoad` method
 
-- Second, Create an `UploadRequestRouter`, a file `Data` and a ``HTTPUploadRequestFile``.
+- Second, Create an `UploadRequestRouter`, a file `Data` and a ``File``.
 
-- Call the `HTTPClient.upload` method and pass the `UploadRequestRouter` and the ``HTTPUploadRequestFile`` as arguments.
+- Call the `HTTPClient.upload` method and pass the `UploadRequestRouter` and the ``File`` as arguments.
 
 - Subscribe to the output `Observable` as done below:
 
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         // Replace with your upload url
         let uploadRequestRouter = UploadRequestRouter.default(url: URL(string: "https://example.com/upload")!)
         let fileData = "Example file".data(using: .utf8)!
-        let file = HTTPUploadRequestFile(forKey: "file", withName: "example.txt", withData: fileData)!
+        let file = File(forKey: "file", withName: "example.txt", withData: fileData)!
         httpClient.upload(uploadRequestRouter, file)
             .subscribe(onNext: { (event: HTTPUploadRequestEvent<Model>) in
                 switch event {
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
 
 - That's it, you made an upload request.
 
-- Tip: If you need to upload a file from the disk, you can provide the file url through the `withURL` parameter to the ``HTTPUploadRequestFile`` initializer.
+- Tip: If you need to upload a file from the disk, you can provide the file url through the `withURL` parameter to the ``File`` initializer.
 
 - Note: If you choose to upload a file from the disk, you don't have to specify the file name as it will be extracted from the provided file url.
 
